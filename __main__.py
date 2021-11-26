@@ -33,9 +33,10 @@ if __name__ == '__main__':
   from waitress import serve
   from nitdgp_website_notices_web_sraper import AllNotices as al
 
-  
+
   thread = threading.Thread(target=getNotices)
   thread.daemon = True
   thread.start()
-  serve(api,port=8000)
+  port = int(os.environ.get('PORT', 33507))
+  serve(api,port=port)
   thread.join()
