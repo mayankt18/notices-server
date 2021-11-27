@@ -1,6 +1,6 @@
 # Server in Flask for nitdgp notices scraper
 
-The process runs on another thread hence it doesnt affect the normal functioning as a server
+The process runs on another thread hence it doesnt affect the normal functioning as a server.
 
 ## Setup
 ```
