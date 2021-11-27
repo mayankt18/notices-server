@@ -1,18 +1,16 @@
-from flask import Flask, json
-import time
-import sys
-import os
+from flask import Flask
 import threading
+import time
+from scraper_tools import AllNotices as al
+import json
 
 
-companies = [{"id": 1, "name": "Company One"},
-             {"id": 2, "name": "Company Two"}]
+app = Flask(__name__)
 baseurl = 'https://nitdgp.ac.in/p/noticesnitd/general-2'
-api = Flask(__name__)
 
 
-@api.route('/', methods=['GET'])
-def get_companies():
+@app.route('/')
+def give_notices():
     try:
         f = open('response.json')
         data = json.load(f)
@@ -30,16 +28,7 @@ def getNotices():
 
 
 if __name__ == '__main__':
-
-    # path = os.getcwd()
-    # sys.path.insert(0, path+"/nitdgp_website_notices_web_sraper")
-
-    from waitress import serve
-    from scraper_tools import AllNotices as al
-
     thread = threading.Thread(target=getNotices)
     thread.daemon = True
     thread.start()
-    port = int(os.environ.get('PORT', 33507))
-    serve(api, port=port)
-    thread.join()
+    app.run()
