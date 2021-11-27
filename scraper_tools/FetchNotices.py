@@ -1,11 +1,12 @@
 from bs4 import BeautifulSoup
 from requests import get
-from ThreadwithRet import ThreadWithReturnValue
+from .ThreadwithRet import ThreadWithReturnValue
 import time
+
 
 class FetchNotices:
 
-    def __init__(self,url):
+    def __init__(self, url):
         self.linksToNotices = []
         self.url = url
         self.AllNoticesList = []
@@ -14,14 +15,13 @@ class FetchNotices:
         self.getNoticesFromBaseUrl()
         return self.AllNoticesList
 
-    def alternateGetTotalNotices(self,soup):
+    def alternateGetTotalNotices(self, soup):
         next_page_links = soup.find_all('li', class_='page-link')
         link = next_page_links[-1].find('a')
         last_page_no = link['data-ci-pagination-page']
         return last_page_no
 
-
-    def getTotalNotices(self,soup):
+    def getTotalNotices(self, soup):
         next_page_links = soup.find_all('li', class_='next page-link')
         last_page_no = -1
         for i in next_page_links:
@@ -34,20 +34,19 @@ class FetchNotices:
             last_page_no = self.alternateGetTotalNotices(soup)
         return int(last_page_no)
 
-
-    def getLinksToNotices(self,soup):
+    def getLinksToNotices(self, soup):
         totalNotices = self.getTotalNotices(soup)
         links = []
         for page in range(1, totalNotices+1):
             links += [self.url+'?per_page='+str(page)]
         return links
 
-
-    def getNotices(self,notices_url):
+    def getNotices(self, notices_url):
         try:
             notices_page = get(notices_url)
         except:
-            print(f"wasn't able to fetch url: {notices_url} .......... Skipping......")
+            print(
+                f"wasn't able to fetch url: {notices_url} .......... Skipping......")
             return []
 
         soup = BeautifulSoup(notices_page.content, 'html.parser')
@@ -68,12 +67,12 @@ class FetchNotices:
                 }]
         return Notices
 
-
     def getAllNoticesFromLinks(self):
         Notices = []
         threads = []
         for link in self.linksToNotices:
-            thread = ThreadWithReturnValue(target=self.getNotices,args=(link,))
+            thread = ThreadWithReturnValue(
+                target=self.getNotices, args=(link,))
             threads.append(thread)
         for thread in threads:
             thread.start()
@@ -83,14 +82,14 @@ class FetchNotices:
             Notices += notice
         return Notices
 
-
     def getNoticesFromBaseUrl(self):
         try:
             page = get(self.url)
         except:
-            print(f"wasn't able to make get request to {self.url} .......... Skipping......")
+            print(
+                f"wasn't able to make get request to {self.url} .......... Skipping......")
             return []
         soup = BeautifulSoup(page.content, 'html.parser')
 
         self.linksToNotices = self.getLinksToNotices(soup)
-        self.AllNoticesList =  self.getAllNoticesFromLinks()
+        self.AllNoticesList = self.getAllNoticesFromLinks()

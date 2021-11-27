@@ -1,5 +1,5 @@
 from bs4 import BeautifulSoup
-from FetchNotices import FetchNotices
+from .FetchNotices import FetchNotices
 import json
 from requests import get
 import time
