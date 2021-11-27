@@ -11,7 +11,7 @@ baseurl = 'https://nitdgp.ac.in/p/noticesnitd/general-2'
 api = Flask(__name__)
 
 
-@api.route('/notices', methods=['GET'])
+@api.route('/', methods=['GET'])
 def get_companies():
     try:
         f = open('response.json')
