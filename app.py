@@ -27,8 +27,12 @@ def getNotices():
         time.sleep(30*60)
 
 
-if __name__ == '__main__':
+@app.route('/start')
+def start():
     thread = threading.Thread(target=getNotices)
     thread.daemon = True
     thread.start()
+
+
+if __name__ == '__main__':
     app.run()
