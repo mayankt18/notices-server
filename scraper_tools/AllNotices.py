@@ -60,5 +60,8 @@ class AllNotices:
         for j in jobs:
             j.join()
 
+        self.AllNotices = {
+            "notices": self.AllNotices
+        }
         with open("response.json", 'w') as outfile:
             json.dump(self.AllNotices, outfile, indent=2)

@@ -63,7 +63,7 @@ class FetchNotices:
                 {
                     "date": date,
                     "title": title,
-                    "link": href
+                    "file": href
                 }]
         return Notices
 
